@@ -203,8 +203,9 @@ def do_query_user(telegram, member, chat_id, message_thread_id=None):
     name = member['first_name'] if member['first_name'] else 'amig@'
     mention = f"<a href=\"tg://user?id={member['id']}\">{name}</a>"
     courtesy_time = os.getenv('COURTESY_TIME', '120')
-    msg = (f"Hola {mention}, selecciona el pingüino, "
-           f"en menos de {courtesy_time} segundos")
+    msg = (f"Hello {mention}, select the penguin, "
+           f"in less than {courtesy_time} seconds, "
+           "otherwise you will be banned from the group.\n\n")
     result = telegram.send_message(
         chat_id,
         msg,
