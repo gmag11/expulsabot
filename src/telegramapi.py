@@ -40,7 +40,7 @@ class Telegram():
 
     def kick_chat_member(self, chat_id, user_id):
         logging.debug("kick_chat_member")
-        url = URL.format(self._token) + '/kickChatMember'
+        url = URL.format(self._token) + '/banChatMember'
         data = {'chat_id': chat_id, 'user_id': user_id}
         requests.post(url, data=data)
 
