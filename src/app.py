@@ -25,6 +25,36 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 logger.debug("example")
 
+def register_webhook():
+    """Register the webhook with Telegram API"""
+    logger.debug("Registering webhook...")
+    
+    base_url = os.getenv('BASE_URL') # You need to add this to expulsabot.env
+    webhook = os.getenv('WEBHOOK')
+    token = os.getenv('TELEGRAM_API_TOKEN')
+    
+    if not all([base_url, webhook, token]):
+        logger.error("Missing required environment variables")
+        return False
+        
+    webhook_url = f"{base_url}/webhook/{webhook}"
+    api_url = f"https://api.telegram.org/bot{token}/setWebhook"
+    
+    try:
+        response = requests.post(api_url, json={'url': webhook_url})
+        result = response.json()
+        
+        if result.get('ok'):
+            logger.info(f"Webhook registered successfully at {webhook_url}")
+            return True
+        else:
+            logger.error(f"Failed to register webhook: {result.get('description')}")
+            return False
+            
+    except Exception as e:
+        logger.error(f"Error registering webhook: {str(e)}")
+        return False
+
 
 @ app.route('/status', methods=['GET'])
 def get_status():
@@ -287,4 +317,5 @@ def not_found(error):
 if __name__ == '__main__':
     if not check('SELECT * FROM USERS'):
         init()
+    register_webhook()
     app.run(debug=True, host='0.0.0.0')
