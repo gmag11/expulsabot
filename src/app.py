@@ -16,15 +16,6 @@ import logging
 
 app = Flask(__name__)
 
-
-logging.basicConfig(
-    stream=sys.stdout,
-    format="[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S %z",
-    level=logging.DEBUG)
-logger = logging.getLogger(__name__)
-logger.debug("example")
-
 def register_webhook():
     """Register the webhook with Telegram API"""
     logger.debug("Registering webhook...")
@@ -55,6 +46,14 @@ def register_webhook():
         logger.error(f"Error registering webhook: {str(e)}")
         return False
 
+logging.basicConfig(
+    stream=sys.stdout,
+    format="[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S %z",
+    level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+logger.debug("example")
+register_webhook()
 
 @ app.route('/status', methods=['GET'])
 def get_status():
@@ -317,6 +316,4 @@ def not_found(error):
 if __name__ == '__main__':
     if not check('SELECT * FROM USERS'):
         init()
-    logger.info("Starting app")
-    register_webhook()
     app.run(debug=True, host='0.0.0.0')
