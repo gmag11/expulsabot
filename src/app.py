@@ -54,6 +54,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 logger.debug("example")
 register_webhook()
+if not check('SELECT * FROM USERS'):
+        init()
 
 @ app.route('/status', methods=['GET'])
 def get_status():
