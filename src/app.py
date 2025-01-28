@@ -317,5 +317,6 @@ def not_found(error):
 if __name__ == '__main__':
     if not check('SELECT * FROM USERS'):
         init()
+    logger.info("Starting app")
     register_webhook()
     app.run(debug=True, host='0.0.0.0')
